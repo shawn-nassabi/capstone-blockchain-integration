@@ -2,16 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-contract HealthDataToken is ERC20 {
-    address public rewardContract;
+contract HealthDataToken is ERC20, Ownable2Step {
+    constructor(address initialOwner) ERC20("HealthDataToken", "HDT") Ownable(initialOwner) {}
 
-    constructor() ERC20("HealthDataToken", "HDT") {
-        rewardContract = msg.sender;
-    }
-
-    function mint(address to, uint256 amount) external {
-        require(msg.sender == rewardContract, "Only Reward Contract can mint tokens");
+    function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
 }

@@ -64,12 +64,10 @@ contract HealthRewardSystem {
 
         // Deduct the points used
         userPoints[user] %= pointsPerToken;
-
-        // Mint tokens for the user
-        tokenContract.mint(user, tokensToMint);
         totalTokensIssued += tokensToMint;
 
         adjustPointsPerToken();
+        // Instead of minting tokens here, we emit an event for the backend to listen to
         emit TokensMinted(user, tokensToMint);
     }
 
